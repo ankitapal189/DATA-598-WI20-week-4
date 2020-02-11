@@ -1,0 +1,93 @@
+---
+title: "Tufte Handout"
+subtitle: "An implementation in R Markdown"
+author: "Ankita Pal"
+date: "`r Sys.Date()`"
+output:
+  tufte::tufte_html: default
+  tufte::tufte_handout:
+    citation_package: natbib
+    latex_engine: xelatex
+  tufte::tufte_book:
+    citation_package: natbib
+    latex_engine: xelatex
+  
+bibliography: example.bib
+link-citations: yes
+---
+
+
+```yaml
+---
+title: "An Example Using the Tufte Style"
+author: "John Smith"
+output:
+  tufte::tufte_handout: default
+  tufte::tufte_html: default
+---
+```
+```{r setup, include=FALSE}
+library(tufte)
+# invalidate cache when the tufte version changes
+knitr::opts_chunk$set(tidy = FALSE, cache.extra = packageVersion('tufte'),echo = FALSE,
+                      comment = "%%",
+                      warning = FALSE,
+                      message = FALSE)
+options(htmltools.dir.version = FALSE)
+```
+## Q1:Uses starwars dataset & tidyverse
+## Q2:Has a plot and table
+## Q4:Has a user-friendly, polished structure
+## Q5:Has a step-up chunk, with 3+ settings
+## Q6:Uses a template from the rticles/papaja/tufte pkg or similar
+
+
+
+```{r, starwars-plot, fig.cap ='A ggplot ofStarwars data', message=FALSE, echo=FALSE, warning=FALSE}
+library(tidyverse)
+starwars %>% 
+  filter(species == "Human") %>% 
+ggplot() +
+  aes(x = height, 
+      y = mass) +
+  geom_point()
+```
+
+
+## Q2:Has a plot and table
+
+
+```{r starwars-tbl}
+starwars %>% 
+  filter(species == "Human")  %>% 
+  select(name, 
+         height, 
+         mass, 
+         homeworld) %>% 
+  knitr::kable(caption = "A knitr kable table of starwars data")
+```
+
+
+
+
+## Q3:Has two in-text citations using bibtex
+2 reference [@echeverria2017discovery; @barba2018terminologies].
+
+plesser says blah [-@plesser2018reproducibility].
+
+
+References cited
+
+## Q6:Uses code from an external R script file and knitr::read_chunk()
+
+```{r load-data, message=FALSE}
+library(tidyverse)
+data <- data(starwars)
+knitr::read_chunk("ext_file.R")
+```
+
+### A ggplot of starwars stuff
+## Q7:Uses knitr caching
+
+```{r starwars-plot, dependson="load-data", fig.align='center', cache=TRUE}
+```
